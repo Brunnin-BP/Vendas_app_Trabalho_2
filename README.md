@@ -201,24 +201,27 @@ Material Design	Padrão visual das telas
 
 🧩 Gerenciamento de Estado
 
-O aplicativo utiliza o Provider como padrão de gerenciamento de estado, adotando ChangeNotifier como base para notificação de alterações.
+A biblioteca Provider foi escolhida por ser:
 
-Estrutura
+- Oficialmente recomendada pela equipe do Flutter;
 
-ProdutoProvider — gerencia lista de produtos e suas operações;
+- Simples de implementar e integrar com widgets ChangeNotifier;
 
-VendaProvider — gerencia lista de vendas e atualizações;
+- Facilmente escalável para múltiplos tipos de dados;
 
-Ambos se comunicam com o Repository, que acessa o banco SQLite.
+- Compatível com a arquitetura MVVM/MVC utilizada no projeto.
 
-Exemplo de notificação:
-Future<void> loadAll() async {
-  _loading = true;
-  notifyListeners();
-  _produtos = await _repo.listarProdutos();
-  _loading = false;
-  notifyListeners();
-}
+🔹 Estrutura de Conexão (Repository ↔ Provider ↔ UI)
+
+O gerenciamento de estado foi implementado através de classes que intermediam o acesso entre a camada de dados (Repository) e a interface do usuário (UI).
+
+- A UI (por exemplo, a tela de lista de produtos) não acessa o banco de dados diretamente.
+
+- Ela interage com o Provider, que contém os métodos de manipulação de dados (carregar, salvar, atualizar, excluir).
+
+- O Provider chama o Repository, que executa as operações CRUD no banco SQLite.
+
+- Após a operação, o Provider executa notifyListeners(), notificando os widgets dependentes para atualizar automaticamente a interface.
 
 ---
 
@@ -226,4 +229,10 @@ Future<void> loadAll() async {
 ![Image](https://github.com/user-attachments/assets/a6d4ddb8-6e97-46ca-830d-eedef0c0a819)
 
 ---
+
+▶️  Exclusão em ação
+![Image](https://github.com/user-attachments/assets/0315cb20-2d09-4c3f-bdbd-1bbd984f78c0)
+
+---
+
 # Parte 3
